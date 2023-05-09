@@ -11,10 +11,13 @@ class ShowYaw extends StatefulWidget {
 }
 
 class _ShowYawState extends State<ShowYaw> {
+  double gYaw = 0.0;
+  double aYaw = 0.0;
   double yaw = 0.0;
+
   double gyroscopeZ = 0.0;
-  double previousGyroscopeZ = 0.0;
-  double deltaTime = 0.0;
+  // double previousGyroscopeZ = 0.0;
+  // double deltaTime = 0.0;
 
   String detection = "";
 
@@ -40,17 +43,36 @@ class _ShowYawState extends State<ShowYaw> {
         //
         // gyroscopeZ = 0;
 
-        yaw += (180 / pi) * event.z * 0.01;
+        gYaw += (180 / pi) * event.z * 0.01;
 
-        if (yaw > 90) {
-          detection = "Left";
-          yaw = 0;
-        }
+        // if (yaw > 90) {
+        //   detection = "Left";
+        //   yaw = 0;
+        // }
+        //
+        // if (yaw < -90) {
+        //   detection = "Right";
+        //   yaw = 0;
+        // }
+      });
+    });
 
-        if (yaw < -90) {
-          detection = "Right";
-          yaw = 0;
-        }
+    accelerometerEvents.listen((AccelerometerEvent event) {
+      setState(() {
+        double gx = event.x;
+        double gy = event.y;
+        double gz = event.z;
+
+        double norm = sqrt(gx * gx + gy * gy + gz * gz);
+        gx /= norm;
+        gy /= norm;
+        gz /= norm;
+
+        double pitch = asin(-gx);
+        double roll = atan2(gy, gz);
+
+        aYaw = -atan2(event.y, event.z);
+        yaw = gYaw * 0.98 + aYaw * 0.02;
       });
     });
   }
