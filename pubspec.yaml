@@ -38,6 +38,7 @@ dependencies:
   sensors: ^2.0.3
   camera: ^0.10.4
   qr_code_scanner: ^1.0.1
+  postgresql2: ^1.0.4
 
 dev_dependencies:
   flutter_test:
