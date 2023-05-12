@@ -74,6 +74,7 @@ class _GetAllSensorState extends State<GetAllSensor> {
                 },
                 child: Text("Show yaw")
             ),
+            Divider(),
             TextButton(
                 onPressed: () {
                   Navigator.of(context).push(
@@ -82,6 +83,7 @@ class _GetAllSensorState extends State<GetAllSensor> {
                 },
                 child: Text("Show qr")
             ),
+            Divider(),
             Center(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.3),
@@ -136,6 +138,7 @@ class _GetAllSensorState extends State<GetAllSensor> {
                 },
                 child: Text("Show point map")
             ),
+            Divider(),
             TextButton(
                 onPressed: () {
                   Navigator.of(context).push(
