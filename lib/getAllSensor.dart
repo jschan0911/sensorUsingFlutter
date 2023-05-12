@@ -23,7 +23,9 @@ class _GetAllSensorState extends State<GetAllSensor> {
   double _accelerometerY = 0;
   double _accelerometerZ = 0;
 
-  TextEditingController _controller = TextEditingController();
+  TextEditingController _floor = TextEditingController();
+  TextEditingController _x = TextEditingController();
+  TextEditingController _y = TextEditingController();
 
   @override
   void initState() {
@@ -55,15 +57,15 @@ class _GetAllSensorState extends State<GetAllSensor> {
       ),
       body: Center(
           child: Column(children: [
-            Text('Gyroscope values:'),
-            Text('X: $_gyroscopeX'),
-            Text('Y: $_gyroscopeY'),
-            Text('Z: $_gyroscopeZ'),
-            SizedBox(height: 20),
-            Text('Accelerometer values:'),
-            Text('X: $_accelerometerX'),
-            Text('Y: $_accelerometerY'),
-            Text('Z: $_accelerometerZ'),
+            // Text('Gyroscope values:'),
+            // Text('X: $_gyroscopeX'),
+            // Text('Y: $_gyroscopeY'),
+            // Text('Z: $_gyroscopeZ'),
+            // SizedBox(height: 20),
+            // Text('Accelerometer values:'),
+            // Text('X: $_accelerometerX'),
+            // Text('Y: $_accelerometerY'),
+            // Text('Z: $_accelerometerZ'),
             TextButton(
                 onPressed: () {
                   Navigator.of(context).push(
@@ -80,28 +82,56 @@ class _GetAllSensorState extends State<GetAllSensor> {
                 },
                 child: Text("Show qr")
             ),
-            // TextButton(
-            //     onPressed: () {
-            //       Navigator.of(context).push(
-            //           MaterialPageRoute(builder: (context) => MapPage())
-            //       );
-            //     },
-            //     child: Text("Show map with search")
-            // ),
             Center(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
-                child: TextField(
-                  controller: _controller,
-                  textAlign: TextAlign.center,
-                  keyboardType: TextInputType.number,
+                padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.3),
+                child: Row(
+                  children: [
+                    Expanded(child: Text("floor")),
+                    Expanded(child: TextField(
+                      controller: _floor,
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.number,
+                    ),)
+                  ],
+                ),
+              ),
+            ),
+            Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.3),
+                child: Row(
+                  children: [
+                    Expanded(child: Text("x")),
+                    Expanded(child: TextField(
+                      controller: _x,
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.number,
+                    ),)
+                  ],
+                ),
+              ),
+            ),
+            Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.3),
+                child: Row(
+                  children: [
+                    Expanded(child: Text("y")),
+                    Expanded(child: TextField(
+                      controller: _y,
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.number,
+                    ),)
+                  ],
                 ),
               ),
             ),
             TextButton(
                 onPressed: () {
                   Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => PointMapPage('{"floor": ${_controller.text}, "x": 930, "y": 742}'))
+                      // MaterialPageRoute(builder: (context) => PointMapPage('{"floor": ${_floor.text}, "x": 930, "y": 742}'))
+                      MaterialPageRoute(builder: (context) => PointMapPage('{"floor": ${_floor.text}, "x": ${_x.text}, "y": ${_y.text}}'))
                   );
                 },
                 child: Text("Show point map")
