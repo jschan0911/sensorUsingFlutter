@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -20,14 +21,36 @@ class _ShowYawState extends State<ShowYaw> {
   // double deltaTime = 0.0;
 
   String detection = "";
+  
+  String timeStamp = "";
 
   @override
   void initState() {
     super.initState();
+    DateTime beforeTime = DateTime.now();
     gyroscopeEvents.listen((GyroscopeEvent event) {
       setState(() {
-        // gYaw += (180 / pi) * event.z * 0.01;
         yaw += (180 / pi) * event.z * 0.01;
+
+        DateTime nowTime = DateTime.now();
+        int deltaTime = nowTime.difference(beforeTime).inMilliseconds;
+
+        if (deltaTime >= 50) {
+          yaw += 0.01;
+          beforeTime = nowTime;
+        }
+
+        // double beforeYaw = 0;
+        // if (beforeYaw - yaw >= 0.01) {
+        //   DateTime now = DateTime.now();
+        //   Duration deltaTime = now.difference(beforeTime);
+        //   String dTime = deltaTime.toString();
+        //   timeStamp += "\n$dTime";
+        //
+        //   beforeTime = now;
+        //   beforeYaw = yaw;
+        //   yaw = 0;
+        // }
 
         if (yaw > 90) {
           detection = "Left";
@@ -75,22 +98,28 @@ class _ShowYawState extends State<ShowYaw> {
       appBar: AppBar(
         title: Text('Gyroscope Example'),
       ),
-      body: Center(
-        child: Column(
-          children: [
-            Text(
-              'Yaw: ${yaw.toStringAsFixed(2)}',
-              style: TextStyle(fontSize: 24.0),
+      body: ListView(
+        children: [
+          Center(
+            child: Column(
+              children: [
+                Text(
+                  'Yaw: ${yaw.toStringAsFixed(5)}',
+                  style: TextStyle(fontSize: 24.0),
+                ),
+                Text(
+                  'Detect: $detection',
+                  style: TextStyle(fontSize: 24.0),
+                ),
+                TextButton(onPressed: (){
+                  yaw = 0;
+                  timeStamp = "";
+                }, child: Text("Reset"))
+              ],
             ),
-            Text(
-              'Detect: $detection',
-              style: TextStyle(fontSize: 24.0),
-            ),
-            TextButton(onPressed: (){
-              yaw = 0;
-            }, child: Text("Reset"))
-          ],
-        ),
+          ),
+          Text(timeStamp)
+        ]
       )
     );
   }
