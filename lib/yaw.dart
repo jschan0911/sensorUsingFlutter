@@ -86,21 +86,12 @@ class _ShowYawState extends State<ShowYaw> {
               'Detect: $detection',
               style: TextStyle(fontSize: 24.0),
             ),
-            // TextButton(onPressed: (){
-            //   yaw = 0;
-            // }, child: Text("Reset"))
+            TextButton(onPressed: (){
+              yaw = 0;
+            }, child: Text("Reset"))
           ],
         ),
       )
-    //   Center(
-    //     child: Text(
-    //       'Yaw: ${yaw.toStringAsFixed(2)}',
-    //       style: TextStyle(fontSize: 24.0),
-    //     ),
-    //   ),
-    // )
-
-
     );
   }
 }
