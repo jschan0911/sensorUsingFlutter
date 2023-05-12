@@ -63,7 +63,6 @@ flutter:
   uses-material-design: true
 
   assets:
-    - images/1f.png
     - images/1fmap.png
     - images/2fmap.png
     - images/3fmap.png
