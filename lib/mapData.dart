@@ -24,4 +24,11 @@ class MapData {
       'heights': mapHeights
     };
   }
+
+  int getColumnFromY(int floor, int y) {
+    int column = 0;
+    int mapHeights = mapSize[floor][1].toInt();
+    column = mapHeights - y;
+    return column;
+  }
 }

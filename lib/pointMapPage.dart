@@ -15,7 +15,7 @@ class MyCustomPainter extends CustomPainter {
       ..color = Colors.red
       ..strokeWidth = 5;
 
-    canvas.drawCircle(offset, 5, paint);
+    canvas.drawCircle(offset, 2, paint);
   }
 
   @override
@@ -56,6 +56,7 @@ class _PointMapPageState extends State<PointMapPage> {
     floor = data['floor'];
     x = data['x'];
     y = data['y'];
+    y = MapData().getColumnFromY(floor, y);
 
     mapData = MapData().dataSet(widget._data);
 
