@@ -4,6 +4,7 @@ import 'package:sensors/sensors.dart';
 import 'package:sensors_example/distance.dart';
 import 'package:sensors_example/mapPage.dart';
 import 'package:sensors_example/pointMapPage.dart';
+import 'package:sensors_example/postgreTest.dart';
 import 'package:sensors_example/qrPage.dart';
 import 'package:sensors_example/yaw.dart';
 
@@ -146,6 +147,15 @@ class _GetAllSensorState extends State<GetAllSensor> {
                   );
                 },
                 child: Text("Distance")
+            ),
+            Divider(),
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => PostgreTest())
+                  );
+                },
+                child: Text("PostgreSQL")
             ),
           ],
         ),
