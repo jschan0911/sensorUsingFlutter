@@ -15,7 +15,7 @@ class MyCustomPainter extends CustomPainter {
       ..color = Colors.red
       ..strokeWidth = 5;
 
-    canvas.drawCircle(offset, 2, paint);
+    canvas.drawCircle(offset, 3, paint);
   }
 
   @override
