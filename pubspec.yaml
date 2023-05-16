@@ -39,6 +39,7 @@ dependencies:
   camera: ^0.10.4
   qr_code_scanner: ^1.0.1
   postgresql2: ^1.0.4
+  postgres: ^2.6.1
 
 dev_dependencies:
   flutter_test:
