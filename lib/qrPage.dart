@@ -4,7 +4,6 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:sensors_example/mapPage.dart';
 import 'package:sensors_example/pointMapPage.dart';
 
 class QRPage extends StatefulWidget {

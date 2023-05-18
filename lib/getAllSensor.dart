@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sensors/sensors.dart';
-import 'package:sensors_example/distance.dart';
 import 'package:sensors_example/getSteps.dart';
-import 'package:sensors_example/mapPage.dart';
 import 'package:sensors_example/pointMapPage.dart';
-import 'package:sensors_example/postgreTest.dart';
 import 'package:sensors_example/postgres.dart';
 import 'package:sensors_example/qrPage.dart';
 import 'package:sensors_example/yaw.dart';
@@ -135,29 +132,10 @@ class _GetAllSensorState extends State<GetAllSensor> {
             TextButton(
                 onPressed: () {
                   Navigator.of(context).push(
-                      // MaterialPageRoute(builder: (context) => PointMapPage('{"floor": ${_floor.text}, "x": 930, "y": 742}'))
                       MaterialPageRoute(builder: (context) => PointMapPage('{"floor": ${_floor.text}, "x": ${_x.text}, "y": ${_y.text}}'))
                   );
                 },
                 child: Text("Show point map")
-            ),
-            Divider(),
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => Distance())
-                  );
-                },
-                child: Text("Distance")
-            ),
-            Divider(),
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => PostgreTest())
-                  );
-                },
-                child: Text("PostgreSQL")
             ),
             Divider(),
             TextButton(
