@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sensors/sensors.dart';
 import 'package:sensors_example/distance.dart';
+import 'package:sensors_example/getPath.dart';
 import 'package:sensors_example/mapPage.dart';
 import 'package:sensors_example/pointMapPage.dart';
 import 'package:sensors_example/postgreTest.dart';
@@ -166,6 +167,15 @@ class _GetAllSensorState extends State<GetAllSensor> {
                   );
                 },
                 child: Text("Postgres")
+            ),
+            Divider(),
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => GetPath())
+                  );
+                },
+                child: Text("GetPath")
             ),
           ],
         ),
