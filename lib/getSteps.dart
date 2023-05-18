@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:sensors/sensors.dart';
 
-class GetPath extends StatefulWidget {
-  const GetPath({Key? key}) : super(key: key);
+class GetSteps extends StatefulWidget {
+  const GetSteps({Key? key}) : super(key: key);
 
   @override
-  State<GetPath> createState() => _GetPathState();
+  State<GetSteps> createState() => _GetStepsState();
 }
 
-class _GetPathState extends State<GetPath> {
+class _GetStepsState extends State<GetSteps> {
   bool _isOver = false;
 
   int _step = 0;

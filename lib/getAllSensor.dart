@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sensors/sensors.dart';
 import 'package:sensors_example/distance.dart';
-import 'package:sensors_example/getPath.dart';
+import 'package:sensors_example/getSteps.dart';
 import 'package:sensors_example/mapPage.dart';
 import 'package:sensors_example/pointMapPage.dart';
 import 'package:sensors_example/postgreTest.dart';
@@ -172,7 +172,7 @@ class _GetAllSensorState extends State<GetAllSensor> {
             TextButton(
                 onPressed: () {
                   Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => GetPath())
+                      MaterialPageRoute(builder: (context) => GetSteps())
                   );
                 },
                 child: Text("GetPath")
