@@ -17,12 +17,10 @@ class _GetPathState extends State<GetPath> {
   double _accelerometerY = 0.0;
   double _accelerometerZ = 0.0;
   double _svm = 0.0;
-  double _threshold = 7.0;
+  double _threshold = 5.85;
 
-  // String _detect = "";
-
-  List<double> svmList = [];
-  double _meanSvm = 0.0;
+  // List<double> svmList = [];
+  // double _meanSvm = 0.0;
 
   @override
   void initState() {
@@ -46,16 +44,17 @@ class _GetPathState extends State<GetPath> {
 
           beforeTimeForSensor = nowTimeForSensor;
 
-          if (_svm > 5.0) {
-            svmList.add(_svm);
-
-            double nowSum = 0.0;
-            for (double d in svmList) {
-              nowSum += d;
-            }
-            _meanSvm = nowSum / svmList.length;
-            // _threshold = _meanSvm;
-          }
+          // //최적의 threshold 값을 찾는 코드
+          // if (_svm > 5.0) {
+          //   svmList.add(_svm);
+          //
+          //   double nowSum = 0.0;
+          //   for (double d in svmList) {
+          //     nowSum += d;
+          //   }
+          //   _meanSvm = nowSum / svmList.length;
+          //   // _threshold = _meanSvm;
+          // }
 
           if (_svm > _threshold) {
             _isOver = true;
@@ -82,11 +81,11 @@ class _GetPathState extends State<GetPath> {
           children: [
             Text("$_svm"),
             Text("$_step", style: TextStyle(fontSize: 30),),
-            Text("mean svm: $_meanSvm"),
+            // Text("mean svm: $_meanSvm"),
             ElevatedButton(onPressed: () {
               _step = 0;
-              _meanSvm = 0.0;
-              svmList = [];
+              // _meanSvm = 0.0;
+              // svmList = [];
             }, child: Text("Reset")),
           ],
         ),
