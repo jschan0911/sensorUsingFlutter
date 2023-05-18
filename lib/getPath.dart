@@ -21,6 +21,9 @@ class _GetPathState extends State<GetPath> {
 
   // String _detect = "";
 
+  List<double> svmList = [];
+  double _meanSvm = 0.0;
+
   @override
   void initState() {
     DateTime beforeTime = DateTime.now();
@@ -42,6 +45,17 @@ class _GetPathState extends State<GetPath> {
           _svm = _accelerometerX.abs() + _accelerometerY.abs() + _accelerometerZ.abs() - 10.0;
 
           beforeTimeForSensor = nowTimeForSensor;
+
+          if (_svm > 5.0) {
+            svmList.add(_svm);
+
+            double nowSum = 0.0;
+            for (double d in svmList) {
+              nowSum += d;
+            }
+            _meanSvm = nowSum / svmList.length;
+            // _threshold = _meanSvm;
+          }
 
           if (_svm > _threshold) {
             _isOver = true;
@@ -68,8 +82,11 @@ class _GetPathState extends State<GetPath> {
           children: [
             Text("$_svm"),
             Text("$_step", style: TextStyle(fontSize: 30),),
+            Text("mean svm: $_meanSvm"),
             ElevatedButton(onPressed: () {
               _step = 0;
+              _meanSvm = 0.0;
+              svmList = [];
             }, child: Text("Reset")),
           ],
         ),
