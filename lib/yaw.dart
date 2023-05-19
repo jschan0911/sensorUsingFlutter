@@ -30,14 +30,22 @@ class _ShowYawState extends State<ShowYaw> {
     DateTime beforeTime = DateTime.now();
     gyroscopeEvents.listen((GyroscopeEvent event) {
       setState(() {
-        yaw += (180 / pi) * event.z * 0.01;
+        yaw -= (180 / pi) * event.z * 0.01;
 
         DateTime nowTime = DateTime.now();
         int deltaTime = nowTime.difference(beforeTime).inMilliseconds;
 
         if (deltaTime >= 50) {
-          yaw += 0.01;
+          yaw -= 0.01;
           beforeTime = nowTime;
+        }
+
+        if (yaw < 0) {
+          yaw += 360;
+        }
+
+        if (yaw > 360) {
+          yaw -= 360;
         }
 
         // double beforeYaw = 0;
@@ -52,15 +60,15 @@ class _ShowYawState extends State<ShowYaw> {
         //   yaw = 0;
         // }
 
-        if (yaw > 90) {
-          detection = "Left";
-          yaw = 0;
-        }
-
-        if (yaw < -90) {
-          detection = "Right";
-          yaw = 0;
-        }
+        // if (yaw > 90) {
+        //   detection = "Right";
+        //   yaw = 0;
+        // }
+        //
+        // if (yaw < -90) {
+        //   detection = "Left";
+        //   yaw = 0;
+        // }
       });
     });
 
