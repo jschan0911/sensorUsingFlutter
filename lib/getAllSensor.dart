@@ -8,6 +8,8 @@ import 'package:sensors_example/postgres.dart';
 import 'package:sensors_example/qrPage.dart';
 import 'package:sensors_example/yaw.dart';
 
+import 'getPathInha.dart';
+
 class GetAllSensor extends StatefulWidget {
   const GetAllSensor({Key? key}) : super(key: key);
 
@@ -164,6 +166,15 @@ class _GetAllSensorState extends State<GetAllSensor> {
                   );
                 },
                 child: Text("GetPath")
+            ),
+            Divider(),
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => GetPathInha())
+                  );
+                },
+                child: Text("GetPathInha")
             ),
           ],
         ),
