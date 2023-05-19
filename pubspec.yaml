@@ -69,6 +69,7 @@ flutter:
     - images/3fmap.png
     - images/4fmap.png
     - images/5fmap.png
+    - images/test.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
