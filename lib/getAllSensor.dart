@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sensors/sensors.dart';
 import 'package:sensors_example/getPath.dart';
+import 'package:sensors_example/getPathBuilding5.dart';
 import 'package:sensors_example/getSteps.dart';
 import 'package:sensors_example/pointMapPage.dart';
 import 'package:sensors_example/postgres.dart';
@@ -175,6 +176,15 @@ class _GetAllSensorState extends State<GetAllSensor> {
                   );
                 },
                 child: Text("GetPathInha")
+            ),
+            Divider(),
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => GetPathBuilding5())
+                  );
+                },
+                child: Text("GetPathBuilding5")
             ),
           ],
         ),
