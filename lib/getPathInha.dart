@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sensors/sensors.dart';
 
 class MyCustomPainter extends CustomPainter {
@@ -36,8 +37,9 @@ class GetPathInha extends StatefulWidget {
 class _GetPathInhaState extends State<GetPathInha> {
   /*걸음 수를 측정하기 위해 필요한 변수들*/
   int _step = 0;                //걸음 수
+  int _totalStep = 0;
   double _svm = 0.0;            //가속도 센서의 정보를 확인하기 위한 값
-  double _threshold = 5.85;     //걸음 수를 셀 때 SVM값에 대한 한계값
+  double _threshold = 6.0;     //걸음 수를 셀 때 SVM값에 대한 한계값
   bool _isOver = false;         //걸음 수를 셀 때의 한계값을 넘었는지를 확인
   double _accelerometerX = 0.0; //가속도 센서의 값들
   double _accelerometerY = 0.0;
@@ -52,9 +54,11 @@ class _GetPathInhaState extends State<GetPathInha> {
   double nowY = 887;
 
   /*테스트를 위한 변수들*/
-  String results = "--- results ---";
+  String results = "step, yaw, x, y";
 
   double imgSizeHandler = 0.3;
+
+  double oneStepInPixel = 1.4;
 
   @override
   void initState() {
@@ -127,42 +131,71 @@ class _GetPathInhaState extends State<GetPathInha> {
 
         //2초마다 사용자의 현재 위치를 계산하여 Paint로 표시
         if (deltaTimeForDraw >= 2000 && _step > 0) {
-          double nowYaw = 0;
+          // double yaw = 0;
+
+          // if (yaw > 337.5 && yaw <=360 || yaw >= 0 && yaw <= 22.5) {
+          //   nowYaw = 0;
+          // }
+          // else if (yaw > 22.5 && yaw <= 67.5) {
+          //   nowYaw = 45;
+          // }
+          // else if (yaw > 67.5 && yaw <= 112.5) {
+          //   nowYaw = 90;
+          // }
+          // else if (yaw > 112.5 && yaw <= 157.5) {
+          //   nowYaw = 135;
+          // }
+          // else if (yaw > 157.5 && yaw <= 202.5) {
+          //   nowYaw = 180;
+          // }
+          // else if (yaw > 202.5 && yaw <= 247.5) {
+          //   nowYaw = 225;
+          // }
+          // else if (yaw > 247.5 && yaw <= 292.5) {
+          //   nowYaw = 270;
+          // }
+          // else if (yaw > 292.5 && yaw <= 337.5) {
+          //   nowYaw = 315;
+          // }
 
           if (yaw > 337.5 && yaw <=360 || yaw >= 0 && yaw <= 22.5) {
-            nowYaw = 0;
+            yaw = 0;
           }
           else if (yaw > 22.5 && yaw <= 67.5) {
-            nowYaw = 45;
+            yaw = 45;
           }
           else if (yaw > 67.5 && yaw <= 112.5) {
-            nowYaw = 90;
+            yaw = 90;
           }
           else if (yaw > 112.5 && yaw <= 157.5) {
-            nowYaw = 135;
+            yaw = 135;
           }
           else if (yaw > 157.5 && yaw <= 202.5) {
-            nowYaw = 180;
+            yaw = 180;
           }
           else if (yaw > 202.5 && yaw <= 247.5) {
-            nowYaw = 225;
+            yaw = 225;
           }
           else if (yaw > 247.5 && yaw <= 292.5) {
-            nowYaw = 270;
+            yaw = 270;
           }
           else if (yaw > 292.5 && yaw <= 337.5) {
-            nowYaw = 315;
+            yaw = 315;
           }
 
           //사용자 위치 좌표 업데이트, 이때 cos, sin함수의 파라미터는 radian 단위이므로 변환 과정 추가
-          nowX += _step * 1.4 * imgSizeHandler * cos(nowYaw * (pi / 180));
-          nowY += _step * 1.4 * imgSizeHandler * sin(nowYaw * (pi / 180));
+          // nowX += _step * oneStepInPixel * imgSizeHandler * cos(nowYaw * (pi / 180));
+          // nowY += _step * oneStepInPixel * imgSizeHandler * sin(nowYaw * (pi / 180));
+          nowX += _step * oneStepInPixel * cos(yaw * (pi / 180));
+          nowY += _step * oneStepInPixel * sin(yaw * (pi / 180));
 
           //사용자 경로 리스트에 현재 연산한 위치좌표 추가
           _offsets.add(Offset(nowX * imgSizeHandler, nowY * imgSizeHandler));
 
           //log 데이터 출력
-          results += "\nstep: $_step || yaw: ${nowYaw.toStringAsFixed(2)} || nowX: ${nowX.toStringAsFixed(2)} || nowY: ${nowY.toStringAsFixed(2)}";
+          results += "\n$_step, ${yaw.toStringAsFixed(2)}, ${nowX.toStringAsFixed(2)}, ${nowY.toStringAsFixed(2)}";
+
+          _totalStep += _step;
 
           //2초 동안의 변위를 의미하는 걸음 수 초기화
           _step = 0;
@@ -193,7 +226,14 @@ class _GetPathInhaState extends State<GetPathInha> {
                   )
               ),
               Text("Yaw: $yaw"),
-              Text("Step: $_step"),
+              Text("Steps in 2sec: $_step"),
+              Text("Total steps: $_totalStep"),
+              IconButton(
+                  onPressed: () {
+                    Clipboard.setData(ClipboardData(text: results));
+                  },
+                  icon: const Icon(Icons.copy)
+              ),
               // ElevatedButton(onPressed: () {
               //   _offsets.add(Offset(100, 100));
               // }, child: Text("Button"))
