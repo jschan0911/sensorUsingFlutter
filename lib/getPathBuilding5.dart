@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sensors/sensors.dart';
+import 'package:sensors_example/newQrPage.dart';
+import 'package:sensors_example/qrPage.dart';
 
 class MyCustomPainter extends CustomPainter {
   final List<Offset> offsets;
@@ -17,7 +19,7 @@ class MyCustomPainter extends CustomPainter {
       ..strokeWidth = 5;
 
     for (Offset offset in offsets) {
-      canvas.drawCircle(offset, 1.4, paint);
+      canvas.drawCircle(offset, 1.5, paint);
     }
   }
 
@@ -39,7 +41,8 @@ class _GetPathBuilding5State extends State<GetPathBuilding5> {
   int _step = 0;                //걸음 수
   int _totalStep = 0;
   double _svm = 0.0;            //가속도 센서의 정보를 확인하기 위한 값
-  double _threshold = 6.0;     //걸음 수를 셀 때 SVM값에 대한 한계값
+  double _upThreshold = 16.00;     //걸음 수를 셀 때 SVM값에 대한 한계값
+  double _dnThreshold = 12.00;
   bool _isOver = false;         //걸음 수를 셀 때의 한계값을 넘었는지를 확인
   double _accelerometerX = 0.0; //가속도 센서의 값들
   double _accelerometerY = 0.0;
@@ -56,9 +59,11 @@ class _GetPathBuilding5State extends State<GetPathBuilding5> {
   /*테스트를 위한 변수들*/
   String results = "step, yaw, x, y";
 
-  double imgSizeHandler = 0.3;
+  double imgSizeHandler = 0.35;
 
-  double oneStepInPixel = 4.54;
+  double pixelPerMeter = 6.48;
+  double oneStepInMeter = 0.7;
+  double oneStepInPixel = 0.0;
 
   @override
   void initState() {
@@ -69,6 +74,8 @@ class _GetPathBuilding5State extends State<GetPathBuilding5> {
     DateTime beforeTimeForYaw = beforeTimeForStep;
 
     super.initState();
+    oneStepInPixel = pixelPerMeter * oneStepInMeter;
+
     /*방향 정보를 구하기 위해 사용하는 자이로스코프 센서*/
     gyroscopeEvents.listen((GyroscopeEvent event) {
       setState(() {
@@ -112,48 +119,67 @@ class _GetPathBuilding5State extends State<GetPathBuilding5> {
           _accelerometerZ = event.z;
 
           //SVM을 계산
-          _svm = _accelerometerX.abs() + _accelerometerY.abs() + _accelerometerZ.abs() - 10.0;
+          _svm = _accelerometerX.abs() + _accelerometerY.abs() + _accelerometerZ.abs();
 
-          //SVM이 한계값을 넘었을 때 _isOver를 true 표시 해놓음
-          if (_svm > _threshold) {
+
+          if (_svm >= _upThreshold && _isOver == false) {
             _isOver = true;
+          }
+          else if (_svm <= _dnThreshold && _isOver == true) {
+            _step += 1;
+            _isOver = false;
           }
 
           beforeTimeForSensor = nowTimeForSensor;
         }
 
-        //0.55초마다 _isOver의 상태를 확인하고, 그 값이 true일 때 걸음 수를 증가
-        if (deltaTimeForStep >= 550 && _isOver == true) {
-          _isOver = false;
-          _step += 1;
-          beforeTimeForStep = nowTimeForStep;
-        }
+        // //0.55초마다 _isOver의 상태를 확인하고, 그 값이 true일 때 걸음 수를 증가
+        // if (deltaTimeForStep >= 550 && _isOver == true) {
+        //   _isOver = false;
+        //   _step += 1;
+        //   beforeTimeForStep = nowTimeForStep;
+        // }
 
         //2초마다 사용자의 현재 위치를 계산하여 Paint로 표시
         if (deltaTimeForDraw >= 2000 && _step > 0) {
-          if (yaw > 337.5 && yaw <=360 || yaw >= 0 && yaw <= 22.5) {
+          // //8개 방향
+          // if (yaw > 337.5 && yaw <=360 || yaw >= 0 && yaw <= 22.5) {
+          //   yaw = 0;
+          // }
+          // else if (yaw > 22.5 && yaw <= 67.5) {
+          //   yaw = 45;
+          // }
+          // else if (yaw > 67.5 && yaw <= 112.5) {
+          //   yaw = 90;
+          // }
+          // else if (yaw > 112.5 && yaw <= 157.5) {
+          //   yaw = 135;
+          // }
+          // else if (yaw > 157.5 && yaw <= 202.5) {
+          //   yaw = 180;
+          // }
+          // else if (yaw > 202.5 && yaw <= 247.5) {
+          //   yaw = 225;
+          // }
+          // else if (yaw > 247.5 && yaw <= 292.5) {
+          //   yaw = 270;
+          // }
+          // else if (yaw > 292.5 && yaw <= 337.5) {
+          //   yaw = 315;
+          // }
+
+          // 4개 방향
+          if (yaw > 315 && yaw <= 360 || yaw >= 0 && yaw <= 45) {
             yaw = 0;
           }
-          else if (yaw > 22.5 && yaw <= 67.5) {
-            yaw = 45;
-          }
-          else if (yaw > 67.5 && yaw <= 112.5) {
+          else if (yaw > 45 && yaw <= 135) {
             yaw = 90;
           }
-          else if (yaw > 112.5 && yaw <= 157.5) {
-            yaw = 135;
-          }
-          else if (yaw > 157.5 && yaw <= 202.5) {
+          else if (yaw > 135 && yaw <= 225) {
             yaw = 180;
           }
-          else if (yaw > 202.5 && yaw <= 247.5) {
-            yaw = 225;
-          }
-          else if (yaw > 247.5 && yaw <= 292.5) {
+          else if (yaw > 225 && yaw <= 315) {
             yaw = 270;
-          }
-          else if (yaw > 292.5 && yaw <= 337.5) {
-            yaw = 315;
           }
 
           //사용자 위치 좌표 업데이트, 이때 cos, sin함수의 파라미터는 radian 단위이므로 변환 과정 추가
@@ -179,36 +205,46 @@ class _GetPathBuilding5State extends State<GetPathBuilding5> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Get Path Page"),),
+      appBar: AppBar(title: Text("Indoor Navigation"),),
       body: ListView(
           children: [Column(
             children: [
               Center(
-                  child: Stack(
-                    children: [
-                      Image.asset('images/1fmap.png',
-                        width: 1111.0 * imgSizeHandler,
-                        height: 849.0 * imgSizeHandler,
-                      ),
-                      CustomPaint(
-                        painter: MyCustomPainter(_offsets),
-                      )
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 50),
+                    child: Stack(
+                      children: [
+                        Image.asset('images/1fmap.png',
+                          width: 1111.0 * imgSizeHandler,
+                          height: 849.0 * imgSizeHandler,
+                        ),
+                        CustomPaint(
+                          painter: MyCustomPainter(_offsets),
+                        )
+                      ],
+                    ),
                   )
               ),
-              Text("Yaw: $yaw"),
+              Text("Yaw: ${yaw.toStringAsFixed(0)}"),
               Text("Steps in 2sec: $_step"),
               Text("Total steps: $_totalStep"),
-              IconButton(
+
+              // IconButton(
+              //     onPressed: () {
+              //       Clipboard.setData(ClipboardData(text: results));
+              //     },
+              //     icon: const Icon(Icons.copy)
+              // ),
+              // Text(results),
+
+              ElevatedButton(
                   onPressed: () {
-                    Clipboard.setData(ClipboardData(text: results));
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => QRPage())
+                    );
                   },
-                  icon: const Icon(Icons.copy)
+                child: Text("QR Code")
               ),
-              // ElevatedButton(onPressed: () {
-              //   _offsets.add(Offset(100, 100));
-              // }, child: Text("Button"))
-              Text(results),
             ],
           ),
           ]),
