@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:sensors_example/qrPage.dart';
 
 import 'mapData.dart';
 
@@ -15,7 +16,7 @@ class MyCustomPainter extends CustomPainter {
       ..color = Colors.red
       ..strokeWidth = 5;
 
-    canvas.drawCircle(offset, 3, paint);
+    canvas.drawCircle(offset, 1.5, paint);
   }
 
   @override
@@ -68,26 +69,45 @@ class _PointMapPageState extends State<PointMapPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Map page after qr"),),
+      appBar: AppBar(title: Text("Indoor Navigation"),),
       body: ListView(
         children: [
           // Text('${widget.imgForData.width}'),
-          Center(
-            child: Stack(
-              children: [
-                Image.asset(imgUrl,
-                  width: imgWidth * imgSizeHandler,
-                  height: imgHeight * imgSizeHandler,
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 50),
+                child: Center(
+                  child: Stack(
+                    children: [
+                      Image.asset(imgUrl,
+                        width: imgWidth * imgSizeHandler,
+                        height: imgHeight * imgSizeHandler,
+                      ),
+                      CustomPaint(
+                        painter: MyCustomPainter(Offset(x.toDouble() * imgSizeHandler, y.toDouble() * imgSizeHandler)),
+                      )
+                    ],
+                  )
                 ),
-                CustomPaint(
-                  painter: MyCustomPainter(Offset(x.toDouble() * imgSizeHandler, y.toDouble() * imgSizeHandler)),
-                )
-              ],
-            )
+              ),
+
+              Text("Yaw: 270"),
+              Text("Steps in 2sec: 0"),
+              Text("Total steps: 0"),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => QRPage())
+                    );
+                  },
+                  child: Text("QR Cdoe")
+              ),
+            ],
           ),
-          Text('floor: $floor'),
-          Text('x: $x'),
-          Text('y: $y'),
+          // Text('floor: $floor'),
+          // Text('x: $x'),
+          // Text('y: $y'),
         ],
       ),
     );

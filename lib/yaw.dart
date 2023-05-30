@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sensors/sensors.dart';
 
 class ShowYaw extends StatefulWidget {
@@ -24,10 +25,13 @@ class _ShowYawState extends State<ShowYaw> {
   
   String timeStamp = "";
 
+  int totalTime = 0;
+
   @override
   void initState() {
     super.initState();
     DateTime beforeTime = DateTime.now();
+    DateTime beforeTimeForLog = beforeTime;
     gyroscopeEvents.listen((GyroscopeEvent event) {
       setState(() {
         yaw -= (180 / pi) * event.z * 0.01;
@@ -36,13 +40,15 @@ class _ShowYawState extends State<ShowYaw> {
         int deltaTime = nowTime.difference(beforeTime).inMilliseconds;
 
         if (deltaTime >= 50) {
+          // yaw -= 0.01025;
+          // yaw -= 0.0105;
           yaw -= 0.01;
           beforeTime = nowTime;
         }
 
-        if (yaw < 0) {
-          yaw += 360;
-        }
+        // if (yaw < 0) {
+        //   yaw += 360;
+        // }
 
         if (yaw > 360) {
           yaw -= 360;
@@ -59,6 +65,14 @@ class _ShowYawState extends State<ShowYaw> {
         //   beforeYaw = yaw;
         //   yaw = 0;
         // }
+
+        DateTime now = DateTime.now();
+        int dTime = now.difference(beforeTimeForLog).inMilliseconds;
+        if (dTime >= 50) {
+          totalTime += dTime;
+          timeStamp += "\n($totalTime, ${yaw.toStringAsFixed(4)}),";
+          beforeTimeForLog = now;
+        }
 
         // if (yaw > 90) {
         //   detection = "Right";
@@ -112,21 +126,27 @@ class _ShowYawState extends State<ShowYaw> {
             child: Column(
               children: [
                 Text(
-                  'Yaw: ${yaw.toStringAsFixed(5)}',
-                  style: TextStyle(fontSize: 24.0),
+                  'Yaw: ${yaw.toStringAsFixed(2)}',
+                  style: TextStyle(fontSize: 40.0),
                 ),
-                Text(
-                  'Detect: $detection',
-                  style: TextStyle(fontSize: 24.0),
-                ),
-                TextButton(onPressed: (){
-                  yaw = 0;
-                  timeStamp = "";
-                }, child: Text("Reset"))
+                // Text(
+                //   'Detect: $detection',
+                //   style: TextStyle(fontSize: 40.0),
+                // ),
+                // TextButton(onPressed: (){
+                //   yaw = 0;
+                //   timeStamp = "";
+                // }, child: Text("Reset"))
               ],
             ),
           ),
-          Text(timeStamp)
+          IconButton(
+              onPressed: () {
+                Clipboard.setData(ClipboardData(text: timeStamp));
+              },
+              icon: const Icon(Icons.copy)
+          ),
+          Center(child: Text(timeStamp))
         ]
       )
     );

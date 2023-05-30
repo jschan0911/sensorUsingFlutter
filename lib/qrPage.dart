@@ -38,7 +38,7 @@ class _QRPageState extends State<QRPage> {
                 // Text('Data: ${result!.code}')
                 ElevatedButton(onPressed: () {
                   _navigationToNextPage(context, result!.code!);
-                }, child: Text('${result!.code}'))
+                }, child: Text('Scanned!'))
               else
                 const Text('Scan a code'),
             ],

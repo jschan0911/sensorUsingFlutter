@@ -4,6 +4,8 @@ import 'package:sensors/sensors.dart';
 import 'package:sensors_example/getPath.dart';
 import 'package:sensors_example/getPathBuilding5.dart';
 import 'package:sensors_example/getSteps.dart';
+import 'package:sensors_example/mainPage.dart';
+import 'package:sensors_example/navigation.dart';
 import 'package:sensors_example/pointMapPage.dart';
 import 'package:sensors_example/postgres.dart';
 import 'package:sensors_example/qrPage.dart';
@@ -141,15 +143,15 @@ class _GetAllSensorState extends State<GetAllSensor> {
                 },
                 child: Text("Show point map")
             ),
-            Divider(),
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => PostgresPage())
-                  );
-                },
-                child: Text("Postgres")
-            ),
+            // Divider(),
+            // TextButton(
+            //     onPressed: () {
+            //       Navigator.of(context).push(
+            //           MaterialPageRoute(builder: (context) => PostgresPage())
+            //       );
+            //     },
+            //     child: Text("Postgres")
+            // ),
             Divider(),
             TextButton(
                 onPressed: () {
@@ -159,24 +161,24 @@ class _GetAllSensorState extends State<GetAllSensor> {
                 },
                 child: Text("GetSteps")
             ),
-            Divider(),
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => GetPath())
-                  );
-                },
-                child: Text("GetPath")
-            ),
-            Divider(),
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => GetPathInha())
-                  );
-                },
-                child: Text("GetPathInha")
-            ),
+            // Divider(),
+            // TextButton(
+            //     onPressed: () {
+            //       Navigator.of(context).push(
+            //           MaterialPageRoute(builder: (context) => GetPath())
+            //       );
+            //     },
+            //     child: Text("GetPath")
+            // ),
+            // Divider(),
+            // TextButton(
+            //     onPressed: () {
+            //       Navigator.of(context).push(
+            //           MaterialPageRoute(builder: (context) => GetPathInha())
+            //       );
+            //     },
+            //     child: Text("GetPathInha")
+            // ),
             Divider(),
             TextButton(
                 onPressed: () {
@@ -186,6 +188,33 @@ class _GetAllSensorState extends State<GetAllSensor> {
                 },
                 child: Text("GetPathBuilding5")
             ),
+            // Divider(),
+            // TextButton(
+            //     onPressed: () {
+            //       Navigator.of(context).push(
+            //           MaterialPageRoute(builder: (context) => NavigationPage())
+            //       );
+            //     },
+            //     child: Text("NavigationPage")
+            // ),
+            // Divider(),
+            // TextButton(
+            //     onPressed: () {
+            //       Navigator.of(context).push(
+            //           MaterialPageRoute(builder: (context) => MainPage())
+            //       );
+            //     },
+            //     child: Text("MainPage")
+            // ),
+            // Divider(),
+            // TextButton(
+            //   onPressed: () {
+            //     Navigator.of(context).push(
+            //         MaterialPageRoute(builder: (context) => GetPathBuilding5AfterQR())
+            //     );
+            //   },
+            //   child: Text("NewGetPathBuilding5")
+            // ),
           ],
         ),
       )
